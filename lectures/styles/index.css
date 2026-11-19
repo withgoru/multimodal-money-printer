@@ -80,6 +80,9 @@
   border-radius: 50%;
   background: var(--muted);
 }
+/* 번호 목록: 번호만 muted 색으로, 장식 없음 */
+.slidev-layout ol { list-style: decimal; padding-left: 1.4em; }
+.slidev-layout ol > li::marker { color: var(--muted); font-weight: 500; }
 .slidev-layout strong, .slidev-layout b { font-weight: 700; }
 .slidev-layout a { border-bottom: 1px solid var(--hairline); }
 
