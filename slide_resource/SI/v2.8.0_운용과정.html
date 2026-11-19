@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>교안 체계 v2.8.0 운용 과정</title>
+<style>
+:root{--bg:#fbfaf7;--fg:#1d1d1b;--muted:#6b6862;--line:#e0dbd1;--card:#fff;
+--h:#2d5a9a;--hb:#e7eef8;--m:#3b3a36;--mb:#efede8;--s:#2f6f5e;--sb:#e8f2ee;--a:#a23a6b;--ab:#f8e9f0;--e:#9a5b13;--eb:#f8eedf;--o:#5f5b55;--ob:#f3f1ec;--new:#c2410c}
+@media (prefers-color-scheme:dark){:root{--bg:#171715;--fg:#ecebe6;--muted:#a19d94;--line:#36342f;--card:#201f1c;
+--h:#8fb3e8;--hb:#1f2a3b;--m:#dedcd5;--mb:#2a2925;--s:#7cc4ad;--sb:#1f3530;--a:#e59bbd;--ab:#3a2130;--e:#e0a35a;--eb:#3a2c1a;--o:#b9b4aa;--ob:#262522;--new:#fb923c}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:14px/1.55 -apple-system,"Apple SD Gothic Neo","Pretendard","Noto Sans KR",sans-serif}
+main{max-width:1320px;margin:0 auto;padding:28px 16px 56px}
+h1{font-size:22px;margin:0 0 2px}.sub{color:var(--muted);margin:0 0 14px;font-size:13.5px}
+.flow{display:flex;flex-wrap:wrap;align-items:center;gap:4px 2px;margin:0 0 6px;font-size:13px}
+.flow span{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:2px 9px}
+.flow i{color:var(--muted);font-style:normal}
+.loop{color:var(--muted);font-size:12.5px;margin:0 0 18px}
+mark.new{background:none;color:var(--new);font-weight:700;font-size:11.5px;border:1px solid var(--new);border-radius:3px;padding:0 3px;margin-left:2px;white-space:nowrap}
+.lanes{display:grid;grid-template-columns:1.25fr .85fr 1.1fr 1.1fr 1fr .85fr 1fr;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:var(--card)}
+.lanes>div{padding:8px 9px;border-bottom:1px solid var(--line);border-right:1px solid var(--line);font-size:13px}
+.lanes>div:nth-child(7n){border-right:0}
+.hd{position:sticky;top:0;font-weight:700;font-size:12.5px;z-index:1}
+.hd.st{background:var(--card)}.hd.h{background:var(--hb);color:var(--h)}.hd.m{background:var(--mb);color:var(--m)}.hd.s{background:var(--sb);color:var(--s)}.hd.a{background:var(--ab);color:var(--a)}.hd.e{background:var(--eb);color:var(--e)}.hd.o{background:var(--ob);color:var(--o)}
+.st b{display:block;font-size:13.5px}.st small{color:var(--muted);display:block;margin-top:2px}
+.c-h{background:color-mix(in srgb,var(--hb) 45%,transparent)}.c-a{background:color-mix(in srgb,var(--ab) 45%,transparent)}.c-e{background:color-mix(in srgb,var(--eb) 45%,transparent)}.c-s{background:color-mix(in srgb,var(--sb) 45%,transparent)}
+.empty{color:var(--line)}
+code{font-size:12px;background:var(--ob);padding:0 3px;border-radius:3px}
+.box{margin-top:18px;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px 14px}
+.box h2{font-size:14px;margin:0 0 6px}
+.box ul{margin:4px 0;padding-left:18px}.box li{margin:2px 0}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media (max-width:980px){.lanes{display:block}.lanes>div{border-right:0}.hd{display:none}
+.lanes>div:not(.st)::before{content:attr(data-l);display:block;font-size:11.5px;font-weight:700;color:var(--muted)}
+.lanes>div.st{background:var(--mb);border-top:2px solid var(--line)}.two{grid-template-columns:1fr}}
+</style>
+</head>
+<body><main>
+<h1>교안 체계 v2.8.0: 스킬과 에이전트를 어떻게 굴려 무엇을 뽑나</h1>
+<p class="sub">메인 세션(성일과 대화하는 에이전트)이 강의 스킬 넷을 따라가며, 필요한 곳에서 서브에이전트·마디아·외부 도구를 부르고, 결정은 성일에게 받는다. v2.8.0 = lecture-curriculum 2.7.0 · lecture-deck-author 2.7.0 · lecture-illust 2.2.0 · lecture-deck-build 2.2.1 · 원칙 정본 v2.8. <mark class="new">v2.8</mark>은 이번 버전에서 새로 생긴 것.</p>
+
+<div class="flow"><span>요청</span><i>→</i><span>조사</span><i>→</i><span>트렌드</span><i>→</i><span>이해 세션</span><i>→</i><span>설계</span><i>→</i><span>실습 자산·실측</span><i>→</i><span>덱</span><i>→</i><span>그림</span><i>→</i><span>배포</span><i>→</i><span>회차 사이</span></div>
+<p class="loop">↩ 회차 사이의 피드백과 덱을 만들다 드러난 빈칸은 설계로 되돌아간다. 강의를 만들며 찾은 스킬의 고칠 점은 맨 아래 "체계 개선"으로 간다.</p>
+
+<div class="lanes">
+<div class="hd st">단계 · 왜 있나</div><div class="hd h">성일</div><div class="hd m">메인 세션(나)이 하는 일</div><div class="hd s">스킬</div><div class="hd a">에이전트</div><div class="hd e">외부 도구</div><div class="hd o">산출물</div>
+
+<div class="st"><b>0 요청과 쓰임</b><small>누가 무엇에 쓰는 설계인지 모르면 엉뚱한 모양으로 짓는다</small></div>
+<div class="c-h" data-l="성일">공고·편성표·요청을 준다. 쓰임(실제 강의/샘플), 대상을 고르고 이유를 적는다</div>
+<div data-l="메인">파일을 고치기 전 브리핑(의도 사슬)과 확인. 묻기 전에 성일의 선택을 예측해 기록, 질문은 다중선택</div>
+<div class="c-s" data-l="스킬">curriculum 0단계 첫 줄(쓰임 확인)</div>
+<div class="empty" data-l="에이전트">·</div><div class="empty" data-l="외부">·</div>
+<div data-l="산출물">강의 폴더, 결정 기록(작업 로그)</div>
+
+<div class="st"><b>1 조사</b><small>가정으로 묻기보다 증거로 수강생 상황을 잡는다</small></div>
+<div class="c-h" data-l="성일">조사로 못 채운 공백에만 답한다(강사가 이 일을 해 봤나)</div>
+<div data-l="메인">넓게 훑을 조사를 갈래로 나눠 서브에이전트에 맡기고(모델은 일에 맞게, 조사는 sonnet), 돌아온 결과를 파일로 확인. 고객사 자료는 <code>_private/</code>와 익명화</div>
+<div class="c-s" data-l="스킬">curriculum 0단계, <code>research.md</code>(원문 확보, 지난 강의 자료, 비슷한 과정, 실사례, 기술 확인)</div>
+<div class="c-a" data-l="에이전트">조사 서브에이전트 여럿을 나란히(공고, 실사례, 지난 강의 자료, 도구 사실)</div>
+<div class="c-e" data-l="외부">codex로 "그냥 시킨 결과" 재기, ctx7·공식 문서</div>
+<div data-l="산출물"><code>01_조사/</code> 수강생 상황표, 범위 검산, 주최측 확인 목록, 그냥 시킨 결과</div>
+
+<div class="st"><b>2 트렌드</b><small>강의마다 처음부터 찾지 않도록 AI 쪽과 수강생 분야의 변화를 쌓는다</small></div>
+<div class="c-h" data-l="성일">평소에 링크드인·스레드에서 좋아요를 누른다(hermes가 기록)</div>
+<div data-l="메인">저장소를 먼저 읽고, 낡은 항목만 다시 확인. 강사가 실험한 도구는 실험 기록에 연결</div>
+<div class="c-s" data-l="스킬">curriculum 원칙 17, <code>research.md</code> 4-1절</div>
+<div class="c-a" data-l="에이전트">좋아요 기록을 거르는 서브에이전트, 웹 확인 서브에이전트</div>
+<div class="c-e" data-l="외부">공식 문서, 웹</div>
+<div data-l="산출물"><code>assets/트렌드/</code>, 이 강의용 <code>01_조사/트렌드.md</code></div>
+
+<div class="st"><b>3 이해 세션 둘</b><small>강사가 그 일과 그 도구를 직접 알아야 "제가 해 보니"라고 말할 수 있다</small></div>
+<div class="c-h" data-l="성일">묶음마다 묻고, 도구를 직접 돌려 보고, 자기 말로 되짚는다</div>
+<div data-l="메인">업무(조사 직후)와 내용(덱 전)을 실제 사례와 결과로 설명하고 틀린 곳을 바로잡는다</div>
+<div class="c-s" data-l="스킬">curriculum 0-1단계, 5-3단계</div>
+<div class="empty" data-l="에이전트">·</div>
+<div class="c-e" data-l="외부">가르칠 도구 자체(GA4 등)</div>
+<div data-l="산출물"><code>강사_이해_업무.md</code>, <code>강사_이해_내용.md</code></div>
+
+<div class="st"><b>4 설계</b><small>수업이 아니라 수업 다음 날을 거꾸로 짓는다. 쌓인 맥락이 자산이라 메인이 직접 쓴다</small></div>
+<div class="c-h" data-l="성일">세션을 넘는 결정을 고른다(선택지, 실패 시나리오, 갈리는 지점을 보고)</div>
+<div data-l="메인">페르소나 → 강의마다 정할 것 → 도착점 → 선수지식 → 교수 전략·이론 목록 → 블록·회차·시간표(검산) → 운영</div>
+<div class="c-s" data-l="스킬">curriculum 1~5-2단계, <code>merrill.md</code>, <code>timing.md</code>, <code>operations.md</code>. 페르소나에 날것의 욕망·명분·실패 비용, 사는·듣는·평가하는 사람<mark class="new">v2.8</mark> · 도착점 7 "강의를 원하게 만드는 말"(제목, 공고 한 줄, 첫 장)<mark class="new">v2.8</mark> · 교수 전략에 장면 네 칸(언제 보이나, 누구의 손, 얼마나 남나, 답을 보고 강사가 할 일)<mark class="new">v2.8</mark></div>
+<div class="empty" data-l="에이전트">·</div><div class="empty" data-l="외부">·</div>
+<div data-l="산출물"><code>02_설계/</code> 페르소나, 도착점, 선수지식, 교수 전략, 커리큘럼(회차 표·시간표·컷라인), 운영</div>
+
+<div class="st"><b>5 실습 자산·실측</b><small>덱보다 과제와 데이터를 먼저. 덱이 전제한 장면이 실제로 나오는지 재고, 안 나오면 설계를 고친다</small></div>
+<div class="c-h" data-l="성일">돈·외부 계정이 드는 실측을 승인한다</div>
+<div data-l="메인">데이터는 스크립트로 만들고 정답을 출력해 검산. 시트·양식·실습 시트. 실측 결과로 설계를 되고친다</div>
+<div class="c-s" data-l="스킬">curriculum 6·7단계, <code>production.md</code>, 원칙 9</div>
+<div class="empty" data-l="에이전트">·</div>
+<div class="c-e" data-l="외부">codex(실측), 판정 모델 API, 파이썬 스크립트</div>
+<div data-l="산출물"><code>03_실습자료/</code> 데이터, 시트, 양식, 실습 시트, 강사용 정답 표</div>
+
+<div class="st"><b>6 덱</b><small>설계를 화면과 노트로 옮긴다. 샘플 두 블록으로 방식을 먼저 확인한다</small></div>
+<div class="c-h" data-l="성일">샘플을 본다. 덱 규칙을 바꿀 때는 마디아 확인을 거친다</div>
+<div data-l="메인">블록 추출 → 샘플 두 블록 → 뼈대 → 장마다 형식 네 칸, 활동 장은 누구의 손·언제·얼마나<mark class="new">v2.8</mark> → 화면 검증 → 검토 반영 → 게이트 열하나</div>
+<div class="c-s" data-l="스킬">deck-author 절차 1~11, 원칙 13(형식), 원칙 14(활동 장, 짝 안내 줄 틀, "답에 따라" 줄)<mark class="new">v2.8</mark>, 게이트 11 장면 점검<mark class="new">v2.8</mark>, <code>verify.md</code>, 그래프는 dataviz</div>
+<div class="c-a" data-l="에이전트">모의 수강생 서브에이전트(게이트 9, 수강생·강사 자리에서 읽기), 마디아(게이트 7, 디자인과 그림 자리)</div>
+<div class="c-e" data-l="외부">헤드리스 브라우저(화면 검증)</div>
+<div data-l="산출물"><code>04_덱/vX.Y.Z/</code> 블록, 강사 노트(N), 검토 칸(R), <code>체계버전.md</code></div>
+
+<div class="st"><b>7 그림</b><small>그림은 일을 하는 곳에만 둔다</small></div>
+<div class="empty" data-l="성일">·</div>
+<div data-l="메인">마디아가 고른 자리에만, 한 문장의 주장으로 그림을 설계 → 프롬프트 검증 → 생성 → 눈으로 전수 검사 → 바탕색 맞추기</div>
+<div class="c-s" data-l="스킬">lecture-illust(<code>presets.md</code>, <code>match_paper.py</code>), image-prompt(검증기), codex-imagegen</div>
+<div class="c-a" data-l="에이전트">마디아(자리 지정)</div>
+<div class="c-e" data-l="외부">codex 이미지 생성</div>
+<div data-l="산출물"><code>images/</code>, <code>images/prompts/</code></div>
+
+<div class="st"><b>8 배포</b><small>어디서나 열리는 파일 하나</small></div>
+<div class="empty" data-l="성일">·</div>
+<div data-l="메인">블록 조립 → 노트·검토 칸 나누기 → 단일 파일 → 핸드아웃 PDF</div>
+<div class="c-s" data-l="스킬">deck-build(<code>assemble_deck.py</code>, <code>split_notes.py</code>, <code>build_standalone.py</code>, <code>build_handout_pdf.py</code>)</div>
+<div class="empty" data-l="에이전트">·</div>
+<div class="c-e" data-l="외부">헤드리스 브라우저(PDF)</div>
+<div data-l="산출물"><code>_독립형.html</code>, 핸드아웃 PDF</div>
+
+<div class="st"><b>9 회차 사이</b><small>모든 회차를 먼저 완성하고, 회차마다 피드백으로 고친다</small></div>
+<div class="c-h" data-l="성일">회차를 마치고 피드백을 준다</div>
+<div data-l="메인">강의 기록 → 뒤 회차에 닿는 곳 찾기 → "지금 처음 만든다면"으로 다시 따지기 → 직전 확인 → 재빌드</div>
+<div class="c-s" data-l="스킬">curriculum 8단계, <code>timing.md</code> 5절</div>
+<div class="empty" data-l="에이전트">·</div><div class="empty" data-l="외부">·</div>
+<div data-l="산출물"><code>05_강의기록/</code>, 고친 덱</div>
+
+<div class="st"><b>10 체계 개선</b><small>스킬이 강의를 만들며 바뀌므로 버전마다 무엇을 왜 바꿨는지와 시험 결과를 남긴다</small></div>
+<div class="c-h" data-l="성일">다음 버전 후보를 준다, 범위를 고른다</div>
+<div data-l="메인">태그·사본 확인 → 고침 → 변경 기록 → 커밋·태그·폴더 사본 → 변경 대장. 버전 시험: 같은 요청서로 버전마다 설계부터 작은 샘플(설계 문서 하나 + 덱 두 블록)<mark class="new">v2.8</mark></div>
+<div class="c-s" data-l="스킬"><code>skills/README.md</code> 버전 올리기·버전 시험<mark class="new">v2.8</mark>, <code>backup_version.sh</code></div>
+<div class="c-a" data-l="에이전트">그 버전의 폴더 사본만 읽는 만들기 서브에이전트(sonnet), 블라인드 평가자 다섯(현업 담당자, 엔지니어, 인재개발 담당, 설계 평가자, 마디아)<mark class="new">v2.8</mark>, 덱 규칙이면 마디아 확인</div>
+<div class="empty" data-l="외부">·</div>
+<div data-l="산출물"><code>CHANGELOG.md</code>, 태그 <code>skills-vX.Y.Z</code>, <code>버전시험/&lt;주제&gt;/</code> 비교·채점</div>
+</div>
+
+<div class="two">
+<div class="box"><h2>모든 단계에 걸쳐 도는 것</h2><ul>
+<li><b>훅</b>: lecture-sync(체계 파일·실습 자료를 고치면 버전 순서와 화면·시트 대조를 알림), skill-preflight(맞는 스킬 먼저 보기), ref-label(앞서 나온 번호에 이름 붙이기), session-attribution(다른 세션의 수정 알림)</li>
+<li><b>작업 로그</b>: 성일의 결정과 고른 이유, 의도 사슬 정정, 실측, 실수를 프로젝트를 넘어 한 로그에</li>
+<li><b>원칙 정본</b> <code>assets/교안설계원칙.md</code> v2.8(48~50 신설)<mark class="new">v2.8</mark></li>
+</ul></div>
+<div class="box"><h2>메인이 직접 하고, 맡기는 기준</h2><ul>
+<li>맡긴다: 넓게 훑어야 하는데 과정은 필요 없는 조사, 만든 쪽이 아닌 눈이 필요한 검토(마디아, 모의 수강생, 블라인드 평가)</li>
+<li>직접 한다: 쌓인 맥락이 자산인 설계와 실습 자산, 성일과 주고받아야 하는 결정과 이해 세션</li>
+<li>모델: 조사·모의 독자는 sonnet, 판단이 곧 결정인 검토는 opus, 판단 없는 추출은 haiku</li>
+<li>맡긴 결과는 파일과 git으로 확인한다(만든 쪽과 확인하는 쪽을 나눈다)</li>
+</ul></div>
+</div>
+</main></body></html>

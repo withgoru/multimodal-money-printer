@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>교안 체계 구성도</title>
+<style>
+:root{--bg:#fbfaf7;--fg:#1d1d1b;--muted:#6b6862;--line:#d9d4c9;--card:#fff;
+--skill:#2f6f5e;--skill-bg:#e8f2ee;--agent:#a23a6b;--agent-bg:#f8e9f0;--ext:#9a5b13;--ext-bg:#f8eedf;--human:#2d5a9a;--human-bg:#e7eef8;--file:#5f5b55;--file-bg:#f0eee9}
+@media (prefers-color-scheme:dark){:root{--bg:#171715;--fg:#ecebe6;--muted:#a19d94;--line:#3a3833;--card:#201f1c;
+--skill:#7cc4ad;--skill-bg:#1f3530;--agent:#e59bbd;--agent-bg:#3a2130;--ext:#e0a35a;--ext-bg:#3a2c1a;--human:#8fb3e8;--human-bg:#1f2a3b;--file:#b9b4aa;--file-bg:#2a2925}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:14.5px/1.6 -apple-system,"Apple SD Gothic Neo","Pretendard","Noto Sans KR",sans-serif}
+main{max-width:1180px;margin:0 auto;padding:28px 16px 56px}
+h1{font-size:22px;margin:0 0 2px}.sub{color:var(--muted);margin:0 0 14px;font-size:13.5px}
+.legend{display:flex;flex-wrap:wrap;gap:6px 14px;margin:0 0 18px;font-size:13px;color:var(--muted)}
+.k{display:inline-block;border-radius:4px;padding:0 6px;font-size:12.5px;font-weight:600}
+.k.s{background:var(--skill-bg);color:var(--skill)}.k.a{background:var(--agent-bg);color:var(--agent)}
+.k.e{background:var(--ext-bg);color:var(--ext)}.k.h{background:var(--human-bg);color:var(--human)}.k.f{background:var(--file-bg);color:var(--file)}
+/* 노선 */
+.line{position:relative;display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:4px}
+.line::before{content:"";position:absolute;left:12%;right:12%;top:19px;height:4px;background:var(--skill);border-radius:2px;opacity:.55}
+.st{position:relative;text-align:center}
+.st .dot{width:42px;height:42px;margin:0 auto;border-radius:50%;background:var(--card);border:4px solid var(--skill);display:flex;align-items:center;justify-content:center;font-weight:700;color:var(--skill)}
+.st b{display:block;margin-top:6px;font-size:15px}.st small{color:var(--muted)}
+.back{display:flex;align-items:center;gap:8px;margin:10px 4% 16px;color:var(--muted);font-size:13px}
+.back .bar{flex:1;border-top:2px dashed var(--line);position:relative}
+.back .bar::before{content:"";position:absolute;left:-2px;top:-7px;border:6px solid transparent;border-right:9px solid var(--line);border-left:0}
+/* 열 */
+.cols{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;align-items:start}
+.col{display:flex;flex-direction:column;gap:10px}
+.box{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:10px 12px}
+.box h3{margin:0 0 6px;font-size:13px;color:var(--muted);font-weight:600}
+.tree{list-style:none;margin:0;padding:0}
+.tree li{position:relative;padding-left:14px;margin:3px 0;font-size:13.5px}
+.tree li::before{content:"";position:absolute;left:3px;top:0;bottom:50%;width:8px;border-left:1px solid var(--line);border-bottom:1px solid var(--line)}
+.tree li .n{font-weight:600}.tree li .d{color:var(--muted)}
+.att{border-style:dashed}
+.chip{display:block;border-radius:6px;padding:5px 8px;margin:5px 0;font-size:13px;line-height:1.45}
+.chip.a{background:var(--agent-bg)}.chip.e{background:var(--ext-bg)}.chip.h{background:var(--human-bg)}.chip.s{background:var(--skill-bg)}
+.chip b{display:block;font-size:12.5px}.chip.a b{color:var(--agent)}.chip.e b{color:var(--ext)}.chip.h b{color:var(--human)}.chip.s b{color:var(--skill)}
+.out{background:var(--file-bg);border-radius:8px;padding:7px 10px;font-size:13px;color:var(--file)}
+/* 바탕 */
+.base{margin-top:18px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 14px}
+.base h2{font-size:14px;margin:0 0 8px;color:var(--muted)}
+.bgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.bgrid div{border-left:3px solid var(--line);padding:2px 0 2px 10px;font-size:13.5px}
+.bgrid div b{display:block}.bgrid .p{border-color:var(--human)}.bgrid .q{border-color:var(--skill)}.bgrid .r{border-color:var(--file)}.bgrid .t{border-color:var(--agent)}
+code{font-size:12.5px;background:var(--file-bg);padding:0 4px;border-radius:3px}
+.note{color:var(--muted);font-size:12.5px;margin-top:14px}
+@media (max-width:860px){.line,.cols{grid-template-columns:1fr 1fr}.line::before{display:none}.bgrid{grid-template-columns:1fr}}
+@media (max-width:520px){.line,.cols{grid-template-columns:1fr}}
+</style>
+</head>
+<body><main>
+<h1>교안 체계 구성도</h1>
+<p class="sub">교안 체계 v2.8.0(2026-11-18 기준) · 강의 스킬 넷이 순서대로 이어지고, 각 스킬에 에이전트와 외부 도구가 붙고, 모두가 같은 바탕을 쓴다. 원본은 kyoans <code>skills/</code>.</p>
+<div class="legend"><span><span class="k s">스킬</span> 지침 묶음</span><span><span class="k a">에이전트</span> 따로 띄우는 검토·조사 담당</span><span><span class="k e">외부</span> 다른 도구·모델</span><span><span class="k h">사람</span> 성일</span><span><span class="k f">파일</span> 산출물·기록</span></div>
+
+<div class="line">
+  <div class="st"><div class="dot">1</div><b>설계</b><small>lecture-curriculum 2.7.0</small></div>
+  <div class="st"><div class="dot">2</div><b>덱</b><small>lecture-deck-author 2.7.0</small></div>
+  <div class="st"><div class="dot">3</div><b>그림</b><small>lecture-illust 2.2.0</small></div>
+  <div class="st"><div class="dot">4</div><b>배포</b><small>lecture-deck-build 2.2.1</small></div>
+</div>
+<div class="back"><span class="bar"></span><span>회차를 마치면 피드백을 받아 설계부터 다시 따진다(설계 8단계). 덱을 만들다 드러난 설계 빈칸도 설계 문서로 되돌린다</span></div>
+
+<div class="cols">
+<!-- 1 설계 -->
+<div class="col">
+  <div class="box"><h3>부품</h3><ul class="tree">
+    <li><span class="n">SKILL.md</span> <span class="d">원칙 19개, 절차 0~8단계(조사 → 페르소나 → 도착점 → 선수지식 → 교수 전략 → 블록·시간표 → 운영 → 샘플 → 전체 제작 → 회차 사이)</span></li>
+    <li><span class="n">research.md</span> <span class="d">조사, 그냥 시킨 결과, 트렌드 쌓기</span></li>
+    <li><span class="n">merrill.md</span> <span class="d">교수의 으뜸원리</span></li>
+    <li><span class="n">timing.md</span> <span class="d">회차 표, 시간표, 컷라인</span></li>
+    <li><span class="n">operations.md</span> <span class="d">사전 미팅, 튜터 가이드</span></li>
+    <li><span class="n">production.md</span> <span class="d">모든 회차 제작 순서</span></li>
+    <li><span class="n">강의장면_원문.md</span> <span class="d">v2.8.0에서 더함</span></li>
+    <li><span class="n">cases/</span> <span class="d">오즈 특강, RAG 하루 과정</span></li>
+  </ul></div>
+  <div class="box att"><h3>붙는 것</h3>
+    <span class="chip a"><b>서브에이전트(조사)</b>공고, 비슷한 과정, 실사례, 지난 강의 자료, 트렌드. 모델은 일에 맞게 정한다(기본 sonnet)</span>
+    <span class="chip e"><b>codex</b>그냥 시킨 결과(강의가 넘어야 할 수준) 재기</span>
+    <span class="chip e"><b>ctx7 · 공식 문서</b>도구 기능 확인</span>
+    <span class="chip h"><b>성일</b>쓰임 확인, 결정, 업무 이해 세션, 내용 이해 세션, 회차 피드백</span>
+  </div>
+  <div class="out">→ 강의 폴더 <code>00_원자료</code> <code>01_조사</code> <code>02_설계</code> <code>03_실습자료</code> <code>05_강의기록</code></div>
+</div>
+<!-- 2 덱 -->
+<div class="col">
+  <div class="box"><h3>부품</h3><ul class="tree">
+    <li><span class="n">SKILL.md</span> <span class="d">원칙 14개(노트와 검토 칸, 실습 번호, 형식 고르기 등), 게이트 11개</span></li>
+    <li><span class="n">형식고르기.md</span> <span class="d">할 일 → 형식 표, 덤 관계 점검</span></li>
+    <li><span class="n">형식고르기_원문.md</span> <span class="d">성일이 준 글</span></li>
+    <li><span class="n">verify.md</span> <span class="d">화면 검증(넘침, 간격, 깨진 그림)</span></li>
+    <li><span class="n">pitfalls.md</span> <span class="d">HTML·도구 함정</span></li>
+    <li><span class="n">assets/skeleton-fullscreen.html</span> <span class="d">전체 화면 덱 뼈대</span></li>
+    <li><span class="n">cases/</span> <span class="d">덱 사례 값</span></li>
+  </ul></div>
+  <div class="box att"><h3>붙는 것</h3>
+    <span class="chip a"><b>마디아(madia)</b>게이트 7 디자인 검토, 그림이 일할 곳. madia-design 스킬을 품은 에이전트. 덱 규칙을 바꿀 때도 확인</span>
+    <span class="chip a"><b>모의 수강생 서브에이전트</b>게이트 9: 화면은 수강생 자리, 노트는 강사 자리에서 읽기. [모의] 표시</span>
+    <span class="chip s"><b>dataviz</b>형식 점검 게이트의 그래프 함정</span>
+  </div>
+  <div class="out">→ <code>04_덱/vX.Y.Z/</code> 블록, 강사 노트(N 키), 검토 칸(R 키), <code>체계버전.md</code></div>
+</div>
+<!-- 3 그림 -->
+<div class="col">
+  <div class="box"><h3>부품</h3><ul class="tree">
+    <li><span class="n">SKILL.md</span> <span class="d">그림은 일을 하는 곳에만, 종류는 수강생이 할 일로</span></li>
+    <li><span class="n">presets.md</span> <span class="d">clay 캐주얼, clay 중립, 교과서 삽화풍</span></li>
+    <li><span class="n">pitfalls.md</span> <span class="d">생성 함정</span></li>
+    <li><span class="n">scripts/match_paper.py</span> <span class="d">바탕색을 슬라이드에 맞추기</span></li>
+    <li><span class="n">assets/examples</span> <span class="d">예시 그림</span></li>
+  </ul></div>
+  <div class="box att"><h3>붙는 것</h3>
+    <span class="chip s"><b>image-prompt(공냥)</b>프롬프트 컴파일과 검증기</span>
+    <span class="chip s"><b>codex-imagegen</b>생성 백엔드(codex의 이미지 생성)</span>
+    <span class="chip a"><b>마디아</b>어디에 그림을 둘지(덱 게이트 7에서 받음)</span>
+  </div>
+  <div class="out">→ <code>images/</code>, <code>images/prompts/</code></div>
+</div>
+<!-- 4 배포 -->
+<div class="col">
+  <div class="box"><h3>부품</h3><ul class="tree">
+    <li><span class="n">SKILL.md</span> <span class="d">단일 파일이 기본 산출물</span></li>
+    <li><span class="n">assemble_deck.py</span> <span class="d">블록 조립, 체계 버전을 덱 머리에 기록</span></li>
+    <li><span class="n">split_notes.py</span> <span class="d">강사 노트와 검토 칸 나누기</span></li>
+    <li><span class="n">build_standalone.py</span> <span class="d">그림(WebP)·글꼴·아이콘을 담은 HTML 하나</span></li>
+    <li><span class="n">build_handout_pdf.py</span> <span class="d">핸드아웃 md → A4 PDF</span></li>
+  </ul></div>
+  <div class="box att"><h3>붙는 것</h3>
+    <span class="chip e"><b>브라우저(헤드리스)</b>PDF 인쇄, 화면 검증</span>
+  </div>
+  <div class="out">→ <code>_독립형.html</code>(어디서나 열림), 핸드아웃 PDF</div>
+</div>
+</div>
+
+<div class="base">
+<h2>모두가 쓰는 바탕</h2>
+<div class="bgrid">
+  <div class="q"><b>원칙 정본</b><code>assets/교안설계원칙.md</code>. 스킬 넷이 절차로 옮기는 원칙의 정본. 강의마다 정할 것(1-1절)</div>
+  <div class="q"><b>트렌드 저장소</b><code>assets/트렌드/</code>(AI 쪽, 수강생 분야). 설계 0단계가 먼저 읽고 더한다</div>
+  <div class="r"><b>버전 기록</b><code>skills/VERSION</code> · <code>CHANGELOG.md</code> · <code>README.md</code>(버전 올리기·버전 시험) · 태그 <code>skills-vX.Y.Z</code> · 폴더 사본 <code>~/dev/agent/backups/lecture-skills/</code></div>
+  <div class="r"><b>버전 시험</b><code>버전시험/&lt;주제&gt;/vX.Y.Z/</code>. 버전을 올리면 설계부터 작은 샘플로 다시 만든다(v2.8.0)</div>
+  <div class="t"><b>훅</b><code>lecture-sync-reminder.sh</code>. 체계 파일이나 실습 자료를 고치면 버전 순서와 화면·시트 대조를 알린다</div>
+  <div class="r"><b>작업 로그</b>결정, 성일의 피드백, 실측을 프로젝트를 넘어 한 로그에(<code>wlog.py</code>)</div>
+  <div class="p"><b>성일</b>결정의 주인. 고른 이유를 남기고, 의도 사슬을 바로잡는다</div>
+  <div class="t"><b>링크</b><code>~/dev/agent/skills/lecture-*</code>, <code>.claude/skills/lecture-*</code>는 원본 <code>skills/</code>를 가리키는 링크</div>
+  <div class="q"><b>강의 폴더</b><code>mine/&lt;강의&gt;/</code>. 교안 체계를 시험하는 사례(실제 강의와 샘플)</div>
+</div>
+</div>
+<p class="note">노선의 순서는 기본 흐름이다. 실제로는 덱에서 설계로, 그림에서 덱으로 되돌아가는 일이 잦다. 선 길이와 칸 크기는 중요도나 분량을 뜻하지 않는다.</p>
+</main></body></html>
