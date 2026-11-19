@@ -19,16 +19,17 @@ defineProps<{
   background: var(--wash);
   border-left: 3px solid var(--slidev-theme-primary);
   border-radius: 0 12px 12px 0;
-  padding: 0.9rem 1.4rem;
-  margin: 1.25rem 0;
-  line-height: 1.7;
+  padding: 0.5rem 1rem;
+  margin: 0.75rem 0;
+  line-height: 1.5;
+  font-size: 0.78em;
 }
 .callout-title {
   font-weight: 700;
-  font-size: 0.8em;
+  font-size: 0.85em;
   letter-spacing: 0.06em;
   color: var(--slidev-theme-primary);
-  margin-bottom: 0.25rem;
+  margin-bottom: 0.15rem;
 }
 .callout-body :deep(p) {
   margin: 0;
